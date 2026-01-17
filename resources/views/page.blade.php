@@ -22,7 +22,7 @@
     {{-- Hero Section --}}
     <section 
         class="relative text-white text-center py-20 bg-cover bg-center" 
-        style="background-image: url('{{ Vite::asset('resources/images/kaca2.jpg') }}');"
+        style="background-image: url('{{ asset('images/kaca2.jpg') }}');"
     >
         <div class="absolute inset-0 bg-black/50"></div> <!-- overlay agar teks tetap terbaca -->
         <div class="relative z-10">
