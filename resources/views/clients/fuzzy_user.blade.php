@@ -145,15 +145,22 @@ btnGenerate.addEventListener('click', async () => {
         return;
     }
 
-    selectedIds = values.map(v => parseInt(v)); // ✅ simpan urutan prioritas user
-    const res = await fetch("{{ route('clients.fuzzy.generateMatrix') }}", {
+    selectedIds = values.map(v => parseInt(v)); // simpan urutan prioritas user
+
+    // Gunakan relative URL agar HTTPS selalu dipakai
+    const res = await fetch("/clients/fuzzy/generate-matrix", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            "X-CSRF-TOKEN": "{{ csrf_token() }}"
+            "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value
         },
         body: JSON.stringify({ ids: selectedIds })
     });
+
+    if (!res.ok) {
+        console.error("Request gagal:", res.status, res.statusText);
+        return alert("Terjadi kesalahan, cek console browser.");
+    }
 
     const data = await res.json();
     tableWrapper.innerHTML = data.html;
@@ -190,18 +197,23 @@ document.addEventListener('click', async (e) => {
             matrix[row][col] = val;
         });
 
-        const res = await fetch("{{ route('clients.fuzzy.store') }}", {
+        const res = await fetch("/clients/fuzzy/store", { // relative URL
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Accept": "application/json", // 🔥 wajib biar response html jalan
-                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                "Accept": "application/json",
+                "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value
             },
             body: JSON.stringify({
                 matrix,
-                prioritas: selectedIds // ✅ kirim urutan prioritas user ke controller
+                prioritas: selectedIds
             })
         });
+
+        if (!res.ok) {
+            console.error("Request gagal:", res.status, res.statusText);
+            return alert("Terjadi kesalahan, cek console browser.");
+        }
 
         const html = await res.text();
         hasilContainer.innerHTML = html;
@@ -209,6 +221,7 @@ document.addEventListener('click', async (e) => {
         window.scrollTo({ top: hasilContainer.offsetTop, behavior: 'smooth' });
     }
 });
+
 
 </script>
 @endsection
