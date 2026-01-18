@@ -24,9 +24,9 @@
     <h2 class="text-2xl font-semibold text-gray-700 mb-2">Selamat Datang di Sistem SPK Fuzzy AHP</h2>
     <p class="text-gray-500 mb-4">Kelola data dan lihat hasil analisis keputusan Anda di sini</p>
 
-    <img src="{{ Vite::asset('resources/images/kaca2.jpg') }}" 
-         alt="Dashboard Illustration"
-         class="w-full max-w-4xl rounded-xl shadow-md">
+    <img src="{{ asset('images/kaca2.jpg') }}" 
+     alt="Dashboard Illustration"
+     class="w-full max-w-4xl rounded-xl shadow-md">
 </div>
 </div>
 @endsection
